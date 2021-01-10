@@ -11,6 +11,7 @@ public class PackageAndImport {
         import package.subpackage.Class;
         import package.subpackage.*;        引入全部的Class
         同一个包下的类 import可以省略
+        同样也可以不import 而是使用package.subpackage.Class.objectName/methodName 调用
 
 
     封装和隐藏
@@ -22,11 +23,11 @@ public class PackageAndImport {
 
     访问权限修饰符
 
-        类的成员有四种访问权限
+        类的成员变量和方法有四种访问权限
 
             private             只能在该类内部使用
-            (缺省)               可以在同一个包中使用，但不能用于子类
-            protected           可以在同一个包和子类中使用
+            (缺省)               可以在同一个包中使用
+            protected           可以在同一个包和不同包中的子类中使用
             public              全部
 
         类只有两种访问权限

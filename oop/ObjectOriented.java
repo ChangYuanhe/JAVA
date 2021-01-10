@@ -14,15 +14,11 @@ public class ObjectOriented {
     一个java文件可以写多个类，但只有一个是public
     每个 Java 程序的主类都必须是 public 类，作为公共工具供其他类和程序使用的类应定义为 public 类。
 
-    abstract   抽象类，不能被实例化，可以有抽象方法（使用 abstract修饰的方法）和具体方法（不使用abstract修饰的方法）
-               继承该抽象类的所有子类都必须实现该抽象类中的所有抽象方法（除非子类也是抽象类）。
-    final      如果类被 final 修饰，则不允许被继承。
 
 
 属性的声明
     [public|protected|private] [static] [final] <type> <variable_name>
 
-    final   表示将该成员变量声明为常量，其值无法更改
 
     成员变量初始化默认值
         整数型（byte、short、int 和 long）的基本类型变量的默认值为 0
@@ -38,20 +34,17 @@ public class ObjectOriented {
     [public|protected|private] [abstract|final] [static] <void|return_type> <method_name>([paramList]) {
         // 方法体
     }
-        static：表示限定该成员方法为静态方法。
-        final：表示限定该成员方法不能被重写或重载。
-        abstract：表示限定该成员方法为抽象方法。抽象方法不提供具体的实现，并且所属类型必须为抽象类。
 
         paramList   例如 String[] args  int a  或者空值，与return_type无关
         return_type 返回值类型 需与return a;的值类型相同
 
         方法中形参值的改变不会影响到传参的实参(基本数据类型) 值传递
-        引用数据类型 https://www.bilibili.com/video/BV1CJ411m7gg?p=47
+        对于形参为引用数据类型 https://www.bilibili.com/video/BV1CJ411m7gg?p=47
 
         方法中可以调用方法但不能定义方法  比如 main方法
         同一个类中方法可以直接调用 不需要new实例化对象
 
-        类中的方法可以直接访问类中的成员变量 (static方法只能访问类变量)
+        同一个类中的方法可以直接访问类中的成员变量 (static方法只能访问类变量)
 
         方法个数可变形参的传递
 
@@ -70,9 +63,7 @@ public class ObjectOriented {
             getInfo("这个数字是", 1, 2, 3);
             其实是转化成了数组
 
-方法的重载
 
-    同一个类中允许存在同名方法，只要参数个数和参数类型不同即可(传参顺序不同也可)
 
 
 类的实例化(创建对象)
@@ -89,17 +80,76 @@ public class ObjectOriented {
         作为实参 传递给一个方法调用
 
 
-构造方法    创建对象的原理
+构造方法    创建对象的原理 new对象实际是调用类的构造方法
 
     默认方法 隐式无参构造
         CLassName objectName = new ClassName()    调用了一个默认函数 public CLassName(){}
         默认构造方法 对象的权限和类的权限相同(public 缺省)
 
-    显式定义构造方法    自己在CLassName类内写一个构造方法
-        CLassName objectName(paramList){
-
+    显式定义构造方法    自己在CLassName类内写一个构造方法 用于给类的属性初始化
+        public CLassName (paramList){
+            //方法体
         }
 
+
+    子类会默认调用父类的无参构造方法
+    如果父类中没有无参的构造器 必须显式构造一个构造器 并放在第一行
+
+    同样可以重载
+
+this 关键字        用于指代当前类的对象的成员变量或者方法，没有则从父类中查找
+    this.attribute    this.method
+    this(param);调用构造器   放在首行    至少要有一个构造器不含this()
+
+
+super 关键字        用于指代父类中的成员变量或者方法
+    super不仅限于调用直接父类 可以调用所有父类层级
+    super();调用父类构造器    放在首行
+
+static 关键字 用于属性和方法
+        实例变量         不用static修饰  在类实例化成对象后才可以使用
+        类(静态)变量     使用static修饰  直接(只能)通过CLassName.staticAttribute就可以调用
+
+        类变量比如static String name;相当于类的固有属性 被该类的所有实例化对象所公有
+        公有!
+        静态方法也是一样的 可以直接(只能)通过ClassName.staticMethod调用
+
+        由于不需要实例就可以访问static方法 因此static方法内部不能有this和super
+
+
+final 关键字
+    final表示最终
+    被final修饰的类不能被继承
+    被final修饰的属性不能被修改 即常量
+    被final修饰的方法不能被子类重写 可以重载
+
+
+abstract 抽象类
+
+    含有抽象方法的类必须被声明为抽象类 可以含有非抽象类
+    抽象类不能被实例化 是用来被继承的
+    抽象类的子类必须重写抽象类的所有方法并提供方法体 否则仍为抽象类
+
+    声明抽象方法 abstract return_type methodName(paramList);  不包含{}和方法体
+
+    abstract不能用于属性 私有方法 静态方法 final方法 构造方法
+
+
+JavaBean  属性私有 有set和get方法 默认构造器的一种类
+
+
+代码块(初始化块)       类中用{}括起来的一段代码
+    用于对java对象进行初始化
+
+    非静态代码块  {
+                    //这里可以调用静态和非静态代码块
+                }
+    静态代码块   static{
+                    //这里只能使用静态的属性和方法
+               }
+    每次new对象 非静态代码块都会被执行 但静态代码块只会被执行第一次
+
+    程序执行顺序: 成员变量(属性)的初始化  多个静态代码块被依次执行  多个非静态代码块被依次执行  构造器被执行
 
 
     */
